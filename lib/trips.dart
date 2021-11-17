@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'UI/nav_drawer.dart';
 
 class WebViewExample extends StatefulWidget {
-  const WebViewExample({Key? key, this.url, this.title}) : super(key: key);
-  final url;
-  final title;
+  const WebViewExample({Key? key}) : super(key: key);
   @override
   createState() => Trips();
 
