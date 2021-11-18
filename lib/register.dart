@@ -222,7 +222,7 @@ class _SignUpState extends State<SignUp> {
                                       ),
                                     ),
                                   ),
-                                  Positioned(child: (isLoading)?Center(child: Container(height:26,width: 26,child: CircularProgressIndicator(backgroundColor: Colors.green,))):Container(),right: 30,bottom: 0,top: 0,)
+                                  Positioned(child: (isLoading)?Center(child: Container(height:26,width: 26,child: CircularProgressIndicator(backgroundColor: Colors.indigo,))):Container(),right: 30,bottom: 0,top: 0,)
 
                                 ],
                               )

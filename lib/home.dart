@@ -4,12 +4,12 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-class Home extends StatefulWidget {
+class Trips extends StatefulWidget {
   @override
-  _HomeState createState() => _HomeState();
+  _TripsState createState() => _TripsState();
 }
 
-class _HomeState extends State<Home> {
+class _TripsState extends State<Trips> {
 
   late SharedPreferences preferences;
   late var name = getPref().toString();

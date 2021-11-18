@@ -50,8 +50,8 @@ class _SignInState extends State<SignIn> {
                       Center(
                           child: Image.asset(
                             "images/logo.png",
-                            height: 30,
-                            width: 30,
+                            height: 90,
+                            width: 90,
                             alignment: Alignment.center,
                           )),
                       SizedBox(
@@ -241,7 +241,7 @@ class _SignInState extends State<SignIn> {
 
       print(" User name ${user['name']}");
       savePref(1,user['name'],user['surname'],user['username'],user['id']);
-      Navigator.pushReplacementNamed(context, "/home");
+      Navigator.pushReplacementNamed(context, "/trip");
 
     } else if(response.statusCode == 403){
       scaffoldMessenger.showSnackBar(SnackBar(content:Text("Incorrect Username or Password.Please try again!")));
