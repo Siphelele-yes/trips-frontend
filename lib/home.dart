@@ -28,11 +28,6 @@ class _TripsState extends State<Trips> {
           style: GoogleFonts.roboto(
               textStyle: TextStyle(fontSize: 18, letterSpacing: 1)),
         ),
-        backgroundColor: Colors.black87,
-        centerTitle: true,
-        actions: <Widget>[
-
-        ],
       ),
     );
   }

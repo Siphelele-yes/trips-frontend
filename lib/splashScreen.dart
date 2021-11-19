@@ -9,13 +9,10 @@ class SplashScreen extends StatefulWidget {
   _SplashScreen createState() => _SplashScreen();
 }
 class _SplashScreen extends State<SplashScreen> {
-  bool isLoading=false;
+  bool isLoading=true;
   @override
   void initState() {
     super.initState();
-    setState(() {
-      isLoading = true;
-    });
     Timer(Duration(seconds: 10),
             ()=>Navigator.pushReplacement(context,
             MaterialPageRoute(builder:

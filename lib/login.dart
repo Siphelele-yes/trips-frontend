@@ -165,15 +165,35 @@ class _SignInState extends State<SignIn> {
                                       ),
                                     ),
                                   ),
+                                  Stack(
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () {
+                                          Navigator.pushReplacementNamed(context, "/forgotPassword");
+                                        },
+                                        child: Text(
+                                          "Forgot Password",
+                                          style: GoogleFonts.roboto(
+                                              textStyle: TextStyle(
+                                                  color: Colors.red,
+                                                  fontSize: 13,
+                                                  decoration: TextDecoration.underline,
+                                                  letterSpacing: 0.5)),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+
                                   Positioned(
                                     child: (isLoading)?
                                     Center(
                                         child: Container(
+                                            alignment: Alignment.center,
                                             height:26,width: 26,
                                             child: CircularProgressIndicator(
-                                              backgroundColor: Colors.green,
+                                              backgroundColor: Colors.indigo,
                                             )
-                                        )
+                                        ),
                                     )
                                         :Container(),right: 30,bottom: 0,top: 0,)
 
@@ -241,7 +261,8 @@ class _SignInState extends State<SignIn> {
 
       print(" User name ${user['name']}");
       savePref(1,user['name'],user['surname'],user['username'],user['id']);
-      Navigator.pushReplacementNamed(context, "/trip");
+      scaffoldMessenger.showSnackBar(SnackBar(content:Text("Login successful!")));
+      Navigator.pushReplacementNamed(context, "/home");
 
     } else if(response.statusCode == 403){
       scaffoldMessenger.showSnackBar(SnackBar(content:Text("Incorrect Username or Password.Please try again!")));
