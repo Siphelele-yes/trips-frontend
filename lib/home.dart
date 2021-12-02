@@ -24,7 +24,7 @@ class _TripsState extends State<Trips> {
           Navigator.pushReplacementNamed(context, "/login");
         },),
         title: Text(
-          " Welcome to Trips.",
+          " Welcome to Trips." + name,
           style: GoogleFonts.roboto(
               textStyle: TextStyle(fontSize: 18, letterSpacing: 1)),
         ),
@@ -35,8 +35,9 @@ class _TripsState extends State<Trips> {
    getPref() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
 
-    String? name = preferences.getString('name');
-    if(name!.isNotEmpty) {
+    var name = preferences.getString('name');
+    if(name != null) {
+      print(name);
       return name;
     }
   }

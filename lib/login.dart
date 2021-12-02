@@ -18,11 +18,19 @@ class SignIn extends StatefulWidget {
 class _SignInState extends State<SignIn> {
   final _formKey = GlobalKey<FormState>();
   late String username, password;
+  bool _isChecked = false;
   bool isLoading=false;
   TextEditingController _usernameController=new TextEditingController();
   TextEditingController _passwordController=new TextEditingController();
   GlobalKey<ScaffoldState>_scaffoldKey=GlobalKey();
   late ScaffoldMessengerState scaffoldMessenger ;
+
+  @override
+  void initState() {
+    _loadUserEmailPassword();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     scaffoldMessenger = ScaffoldMessenger.of(context);
@@ -45,23 +53,17 @@ class _SignInState extends State<SignIn> {
                 Container(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
                       Center(
                           child: Image.asset(
                             "images/logo.png",
-                            height: 90,
-                            width: 90,
+                            height: 200,
+                            width: 200,
                             alignment: Alignment.center,
                           )),
                       SizedBox(
                         height: 13,
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      SizedBox(
-                        height: 40,
                       ),
                       Text(
                         "Sign In",
@@ -97,7 +99,7 @@ class _SignInState extends State<SignIn> {
                                       borderSide: BorderSide(color: Colors.red)),
                                   hintText: "Username/Email",
                                   hintStyle: TextStyle(
-                                      color: Colors.indigo, fontSize: 15),
+                                      color: Colors.grey, fontSize: 15),
                                 ),
                                 onSaved: (val) {
                                   username = val!;
@@ -116,11 +118,31 @@ class _SignInState extends State<SignIn> {
                                       borderSide: BorderSide(color: Colors.red)),
                                   hintText: "Password",
                                   hintStyle: TextStyle(
-                                      color: Colors.indigo, fontSize: 15),
+                                      color: Colors.grey, fontSize: 15),
                                 ),
                                 onSaved: (val) {
                                   username = val!;
                                 },
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Container(
+                                  alignment: Alignment.topRight,
+                                  child: Row(
+                                      children: <Widget>[
+                                        Checkbox(
+                                            activeColor: Colors.grey,
+                                            value: _isChecked,
+                                            onChanged: _handleRememberMe),
+                                        Text("Remember Me",
+                                            style: TextStyle(
+                                                color: Colors.red,
+                                                fontSize: 12,
+                                                fontFamily: 'Rubic')
+                                        ),
+                                      ],
+                                  ),
                               ),
                               SizedBox(
                                 height: 30,
@@ -165,25 +187,6 @@ class _SignInState extends State<SignIn> {
                                       ),
                                     ),
                                   ),
-                                  Stack(
-                                    children: [
-                                      GestureDetector(
-                                        onTap: () {
-                                          Navigator.pushReplacementNamed(context, "/forgotPassword");
-                                        },
-                                        child: Text(
-                                          "Forgot Password",
-                                          style: GoogleFonts.roboto(
-                                              textStyle: TextStyle(
-                                                  color: Colors.red,
-                                                  fontSize: 13,
-                                                  decoration: TextDecoration.underline,
-                                                  letterSpacing: 0.5)),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-
                                   Positioned(
                                     child: (isLoading)?
                                     Center(
@@ -207,6 +210,25 @@ class _SignInState extends State<SignIn> {
                       SizedBox(
                         height: 20,
                       ),
+                      Stack(
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.pushReplacementNamed(context, "/forgotPassword");
+                            },
+                            child: Text(
+                              "Forgot Password",
+                              style: GoogleFonts.roboto(
+                                  textStyle: TextStyle(
+                                      color: Colors.red,
+                                      fontSize: 13,
+                                      decoration: TextDecoration.underline,
+                                      letterSpacing: 0.5)),
+                            ),
+                          ),
+                        ],
+                      ),
+
                       SizedBox(
                         height: 20,
                       ),
@@ -274,13 +296,50 @@ class _SignInState extends State<SignIn> {
 
   }
   savePref(int value, String name,String surname, String username, int id) async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
+    SharedPreferences.getInstance().then(
+        (prefs){
+          prefs.setInt("value", value);
+          prefs.setString("username", username);
+          prefs.setString("name", name);
+          prefs.setString("surname", surname);
+        }
+    );
+  }
 
-    preferences.setInt("value", value);
-    preferences.setString("username", username);
-    preferences.setString("name", name);
-    preferences.setString("surname", surname);
-    preferences.commit();
+  void _handleRememberMe(bool? value) {
+    _isChecked = value!;
+    SharedPreferences.getInstance().then(
+          (prefs) {
+        prefs.setBool("remember_me", value);
+        prefs.setString('username', _usernameController.text);
+        prefs.setString('password', _passwordController.text);
+      },
+    );
+    setState(() {
+      _isChecked = value;
+    });
+  }
 
+  void _loadUserEmailPassword() async {
+    try {
+      SharedPreferences _prefs = await SharedPreferences.getInstance();
+      var _username = _prefs.getString("username") ?? "";
+      var _password = _prefs.getString("password") ?? "";
+      var _rememberMe = _prefs.getBool("remember_me") ?? false;
+      print(_rememberMe);
+      print(_username);
+      print(_password);
+      if (_rememberMe) {
+        setState(() {
+          _isChecked = true;
+        });
+        _usernameController.text = _username ?? "";
+        _passwordController.text = _password ?? "";
+      }
+    } catch (e)
+    {
+      print(e);
+    }
   }
 }
+
